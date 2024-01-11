@@ -23,8 +23,8 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
     <!-- Dependency versions -->
-    <ozoneDistroVersion>1.0.0-SNAPSHOT</ozoneDistroVersion>
-    <ozoneDockerComposeVersion>1.0.0-SNAPSHOT</ozoneDockerComposeVersion>
+    <ozoneDistroVersion>1.0.0-alpha.9</ozoneDistroVersion>
+    <ozoneDockerComposeVersion>1.0.0-alpha.9</ozoneDockerComposeVersion>
 
     <!-- Classifier for the dependency report artifact -->
     <dependencyReportClassifier>dependencies</dependencyReportClassifier>
