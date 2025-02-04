@@ -50,6 +50,9 @@
     <eipERPNextOpenMRSArtifactId>eip-erpnext-openmrs</eipERPNextOpenMRSArtifactId>
     <eipOpenMRSOrthancArtifactId>eip-openmrs-orthanc</eipOpenMRSOrthancArtifactId>
 
+    <!-- Bahmni's OpenMRS core -->
+    <bahmniOpenMRSVersion>2.6.9</bahmniOpenMRSVersion>
+
     <!-- Classifier for the dependency report artifact -->
     <dependencyReportClassifier>dependencies</dependencyReportClassifier>
   </properties>
@@ -146,6 +149,13 @@
       <artifactId>ozone-superset-configs</artifactId>
       <version>${project.version}</version>
       <type>zip</type>
+    </dependency>
+
+    <dependency>
+      <groupId>org.openmrs.web</groupId>
+      <artifactId>openmrs-webapp</artifactId>
+      <version>${bahmniOpenMRSVersion}</version>
+      <type>war</type>
     </dependency>
 
   </dependencies>
@@ -323,6 +333,20 @@
             </configuration>
           </execution>
 
+          <!-- Copy Bahmni's OpenMRS Core -->
+          <execution>
+            <id>Copy Bahmni's OpenMRS Core</id>
+            <phase>generate-resources</phase>
+            <goals>
+              <goal>copy-dependencies</goal>
+            </goals>
+            <configuration>
+              <excludeTransitive>true</excludeTransitive>
+              <useBaseVersion>true</useBaseVersion>
+              <outputDirectory>${project.build.directory}/${project.artifactId}-${project.version}/binaries/bahmniemr/openmrs_core/</outputDirectory>
+              <includeArtifactIds>openmrs-webapp</includeArtifactIds>
+            </configuration>
+          </execution>
         </executions>
       </plugin>
       <plugin>
@@ -562,6 +586,24 @@
                   <!-- Only include .omod files -->
                   <fileset dir="${project.build.directory}/bahmniemr_binaries" includes="**/*.omod"/>
                 </copy>
+              </target>
+            </configuration>
+            <goals>
+              <goal>run</goal>
+            </goals>
+          </execution>
+
+          <execution>
+            <id>Rename Bahmni's OpenMRS core</id>
+            <phase>prepare-package</phase>
+            <configuration>
+              <target>
+                <move
+                  todir="${project.build.directory}/${project.artifactId}-${project.version}/binaries/bahmniemr/openmrs_core">
+                  <!-- Only include .war file -->
+                  <fileset dir="${project.build.directory}/${project.artifactId}-${project.version}/binaries/bahmniemr/openmrs_core" includes="openmrs-webapp*.war"/>
+                  <mapper from=".*openmrs-webapp.*\.war" to="openmrs.war" type="regexp"/>
+                </move>
               </target>
             </configuration>
             <goals>
